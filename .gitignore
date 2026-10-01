@@ -5,6 +5,11 @@
 /.pnp
 .pnp.js
 
+# Archivos de entorno y credenciales
+.env
+*.env
+**/.env
+
 # testing
 /coverage
 
