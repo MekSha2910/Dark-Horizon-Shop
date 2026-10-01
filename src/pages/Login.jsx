@@ -18,30 +18,52 @@ const Login = () => {
     });
   };
 
-  // 3. Lógica para verificar el inicio de sesión
-  const handleSubmit = (e) => {
+  // 3. Lógica para verificar el inicio de sesión con MongoDB
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Obtenemos la lista de usuarios de nuestra "base de datos temporal"
-    const usuariosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
+    // Preparamos los datos tal como los espera el backend
+    const datosLogin = {
+      correo: formData.email,
+      contraseña: formData.password
+    };
 
-    // Buscamos si hay un usuario que coincida con el email Y la contraseña
-    const usuarioValido = usuariosExistentes.find(
-      (user) => user.email === formData.email && user.password === formData.password
-    );
+    try {
+      // Hacemos la petición POST a nuestra nueva ruta de login
+      const respuesta = await fetch('http://localhost:8000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datosLogin),
+      });
 
-    if (usuarioValido) {
-      // Si las credenciales son correctas:
-      alert(`¡Bienvenido de nuevo, ${usuarioValido.nombre || usuarioValido.usuario}!`);
-      
-      // Opcional: Guardamos en localStorage quién es el usuario que inició sesión actualmente
-      localStorage.setItem('usuarioActivo', JSON.stringify(usuarioValido));
+      const data = await respuesta.json();
+      console.log("Datos que recibo del servidor:", data.usuario);
+      if (respuesta.ok) {
+        // Si el login fue correcto (status 200)
+        alert(`¡Bienvenido de nuevo, ${data.usuario.nombre}!`);
+        
+        // Guardamos en localStorage la info del usuario activo para saber quién está navegando
+        localStorage.setItem('usuarioActivo', JSON.stringify(data.usuario));
 
-      // Redirigimos a la página de Inicio
-      navigate('/'); 
-    } else {
-      // Si no coinciden:
-      alert('Correo o contraseña incorrectos. Por favor, inténtalo de nuevo.');
+        // Redireccion dependiendo el usuario
+        if (data.usuario.tipoUsuario === 'admin') {
+          console.log("Detectado como Admin, redirigiendo...");
+          navigate('/admin'); 
+        } else {
+          console.log("Detectado como Cliente, redirigiendo...");
+          navigate('/'); 
+        }
+        
+        window.location.reload(); // Recargamos para que la barra se actualice
+      } else {
+        // Si el backend nos mandó un error (correo no registrado o contraseña incorrecta)
+        alert(data.mensaje);
+      }
+    } catch (error) {
+      console.error('Error en el login:', error);
+      alert('Hubo un error al intentar conectar con el servidor.');
     }
   };
 

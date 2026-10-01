@@ -19,10 +19,9 @@ const userSchema = new mongoose.Schema({
 
 // Esto encripta la contraseña solita antes de guardar en la DB
 userSchema.pre('save', async function (next) {
-    if (!this.isModified('contraseña')) return next();
+    if (!this.isModified('contraseña')) return;
     const salt = await bcrypt.genSalt(10);
     this.contraseña = await bcrypt.hash(this.contraseña, salt);
-    next();
 });
 
 const User = mongoose.model('users', userSchema);

@@ -25,18 +25,47 @@ const Registro = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const usuariosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const correoExiste = usuariosExistentes.find(user => user.email === formData.email);
-    if (correoExiste) {
-      alert("Este correo ya está registrado.");
-      return;
+
+    // 1. Adaptamos los datos del formulario (React) a lo que espera tu Base de Datos (Node/Mongo)
+    const datosParaBackend = {
+      nombre: formData.nombre,
+      apellido: formData.apellido,
+      tipoDocumento: formData.documento,
+      numeroDocumento: formData.numeroDocumento,
+      correo: formData.email, // Traducimos email a correo
+      direccion: formData.direccion,
+      contraseña: formData.password // Traducimos password a contraseña
+      // Nota: 'usuario', 'fechaNacimiento' y 'telefono' no están en tu modelo User.js, 
+      // así que no los enviamos (o tendrías que agregarlos a tu modelo User.js luego).
+    };
+
+    try {
+      // 2. Hacemos la petición POST a tu servidor
+      const respuesta = await fetch('http://localhost:8000/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datosParaBackend),
+      });
+
+      // 3. Leemos la respuesta del servidor
+      const data = await respuesta.json();
+
+      if (respuesta.ok) {
+        // Si el status es 201 (creado)
+        alert('¡Registro exitoso en MongoDB! Ya puedes iniciar sesión.');
+        navigate('/login');
+      } else {
+        // Si hay un error (ej. el correo o documento ya existe)
+        alert(`Error al registrar: ${data.mensaje}`);
+      }
+    } catch (error) {
+      console.error('Error en la petición:', error);
+      alert('Hubo un error al intentar conectar con el servidor.');
     }
-    usuariosExistentes.push(formData);
-    localStorage.setItem('usuarios', JSON.stringify(usuariosExistentes));
-    alert('¡Registro exitoso! Ya puedes iniciar sesión.');
-    navigate('/login');
   };
 
   return (
