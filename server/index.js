@@ -13,7 +13,10 @@ dotenv.config();
 
 // 2. Inicializar la aplicación de Express
 const app = express();
-app.use(cors()); // Esto permite que React se comunique con Node sin bloqueos
+app.use(cors({
+    origin: 'https://darkhorizontshop.netlify.app',
+    credentials: true
+})); // Esto permite que React se comunique con Node sin bloqueos
 
 // 3. Usar body-parser para que tu servidor entienda los datos JSON que lleguen de React
 app.use(bodyParser.json());
