@@ -40,7 +40,7 @@ const Carrito = () => {
     }));
 
     try {
-        const respuesta = await fetch('http://localhost:8000/api/ventas/procesar', {
+        const respuesta = await fetch('https://dark-horizon-shop.onrender.com/api/ventas/procesar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

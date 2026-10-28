@@ -13,7 +13,7 @@ const Inicio = () => {
   useEffect(() => {
     const cargarProductos = async () => {
       try {
-        const respuesta = await fetch(`http://localhost:8000/api/productos?page=${currentPage}`);
+        const respuesta = await fetch(`https://dark-horizon-shop.onrender.com/api/productos?page=${currentPage}`);
         if (respuesta.ok) {
           const data = await respuesta.json();
           setProductos((data.productos || []).map((producto) => ({

@@ -44,7 +44,7 @@ const Registro = () => {
 
     try {
       // 2. Hacemos la petición POST a tu servidor
-      const respuesta = await fetch('http://localhost:8000/api/users/register', {
+      const respuesta = await fetch('https://dark-horizon-shop.onrender.com/api/registro', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

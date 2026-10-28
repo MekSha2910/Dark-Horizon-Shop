@@ -26,9 +26,9 @@ const Admin = () => {
       const token = localStorage.getItem('token');
 
       const [resProd, resTiendas, resStats] = await Promise.all([
-        fetch('http://localhost:8000/api/productos'),
-        fetch('http://localhost:8000/api/tiendas'),
-        fetch('http://localhost:8000/api/ventas/estadisticas', {
+        fetch('https://dark-horizon-shop.onrender.com/api/productos'),
+        fetch('https://dark-horizon-shop.onrender.com/api/tiendas'),
+        fetch('https://dark-horizon-shop.onrender.com/api/ventas/estadisticas', {
           headers: { 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -63,7 +63,7 @@ const Admin = () => {
   const eliminarProducto = async (id) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar este producto?")) {
       try {
-        const res = await fetch(`http://localhost:8000/api/productos/${id}`, {
+        const res = await fetch(`https://dark-horizon-shop.onrender.com/api/productos/${id}`, {
           method: 'DELETE',
         });
 
@@ -108,7 +108,7 @@ const Admin = () => {
     const productoCompleto = { ...formData, opcionesCompra: opciones };
 
     try {
-      const resp = await fetch('http://localhost:8000/api/productos', {
+      const resp = await fetch('https://dark-horizon-shop.onrender.com/api/productos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productoCompleto)
