@@ -14,7 +14,7 @@ dotenv.config();
 // 2. Inicializar la aplicación de Express
 const app = express();
 app.use(cors({
-    origin: 'https://darkhorizontshop.netlify.app',
+    origin: 'darkhorizontshop.netlify.app',
     credentials: true
 })); // Esto permite que React se comunique con Node sin bloqueos
 
@@ -164,7 +164,7 @@ app.get('/api/productos', async (req, res) => {
         const limit = 24;
         const offset = (page - 1) * limit;
 
-        const [productos] = await dbMySQL.query('SELECT * FROM productos WHERE estado = "activo" LIMIT ? OFFSET ?', [limit, offset]);
+        const [productos] = await dbMySQL.query("SELECT * FROM productos WHERE estado = 'activo' LIMIT ? OFFSET ?", [limit, offset]);
         
         // Por cada producto, buscamos sus precios y se los incrustamos como arreglo
         for (let prod of productos) {
@@ -172,7 +172,7 @@ app.get('/api/productos', async (req, res) => {
             prod.opcionesCompra = opciones;
         }
 
-        const [totalRows] = await dbMySQL.query('SELECT COUNT(*) as count FROM productos WHERE estado = "activo"');
+        const [totalRows] = await dbMySQL.query("SELECT COUNT(*) as count FROM productos WHERE estado = 'activo'");
         res.json({ productos, totalPages: Math.ceil(totalRows[0].count / limit), currentPage: page });
     } catch (error) {
         res.status(500).json({ mensaje: "Error al obtener productos desde MySQL" });
@@ -184,7 +184,7 @@ app.post('/api/productos', async (req, res) => {
     const connection = await dbMySQL.getConnection();
     try {
         await connection.beginTransaction();
-        
+        await dbMySQL.query("UPDATE productos SET estado = 'inactivo' WHERE id_producto = ?", [id]);
         const { nombre, descripcion, stock, imagen_url, opcionesCompra } = req.body;
         // Guardamos el precio de la primera opción como precio de referencia en la tabla principal
         const precioBase = opcionesCompra.length > 0 ? opcionesCompra[0].precio : 0;
