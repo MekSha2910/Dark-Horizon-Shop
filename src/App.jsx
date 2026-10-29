@@ -8,11 +8,13 @@ import Registro from './pages/Registro'
 import Admin from './pages/Admin'
 import './App.css';
 import { Toaster } from 'sonner';
+import FondoEspacio from './components/FondoEspacio';
 
 const App = () => {
   return (
     <>
     <Toaster richColors position="top-right" />
+    <FondoEspacio />
     <Barra />
     
     <Routes>
