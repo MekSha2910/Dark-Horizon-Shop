@@ -13,10 +13,7 @@ dotenv.config();
 
 // 2. Inicializar la aplicación de Express
 const app = express();
-app.use(cors({
-    origin: 'darkhorizontshop.netlify.app',
-    credentials: true
-})); // Esto permite que React se comunique con Node sin bloqueos
+app.use(cors()); // Esto permite que React se comunique con Node sin bloqueos
 
 // 3. Usar body-parser para que tu servidor entienda los datos JSON que lleguen de React
 app.use(bodyParser.json());
@@ -325,9 +322,9 @@ app.get('/api/ventas/estadisticas', verificarAdmin, async (req, res) => {
     }
 });
 
-// 4. Traer las variables de tu archivo .env
-const PORT = process.env.PORT || 8000;
-const MONGO_URL = process.env.mongo_URL;
+    // 4. Traer las variables de tu archivo .env
+    const PORT = process.env.PORT || 8000;
+    const MONGO_URL = process.env.mongo_URL;
 
 // 5. Conectar a MongoDB usando Mongoose
 mongoose.connect(MONGO_URL)
