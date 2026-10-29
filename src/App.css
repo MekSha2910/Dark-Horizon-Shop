@@ -165,6 +165,12 @@ input[type='date'] {
   color: #e5e7eb;
 }
 
+.registro-input-label {
+  margin-bottom: -12px;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
 input:focus,
 select:focus,
 textarea:focus {

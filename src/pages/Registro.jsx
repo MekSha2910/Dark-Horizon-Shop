@@ -85,7 +85,8 @@ const Registro = () => {
         </select>
         <input name="numeroDocumento" value={formData.numeroDocumento} onChange={handleChange} placeholder="Número de documento" required className="registro-input" />
         <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Contraseña" required className="registro-input" />
-        <input type="date" name="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleChange} required className="registro-input" />
+        <label className="registro-input-label" htmlFor="fechaNacimiento">Fecha de nacimiento</label>
+        <input id="fechaNacimiento" type="date" name="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleChange} required className="registro-input" />
         <input name="direccion" value={formData.direccion} onChange={handleChange} placeholder="Dirección" className="registro-input" />
         <input name="telefono" value={formData.telefono} onChange={handleChange} placeholder="Teléfono" className="registro-input" />
         <button type="submit" className="registro-btn registro-btn-primary">Registrar</button>
