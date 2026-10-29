@@ -31,7 +31,7 @@ const Login = () => {
 
     try {
       // Hacemos la petición POST a nuestra nueva ruta de login
-      const respuesta = await fetch('https://dark-horizon-shop.onrender.com/api/login', {
+      const respuesta = await fetch('https://dark-horizon-shop.onrender.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
